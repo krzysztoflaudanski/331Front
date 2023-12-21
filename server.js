@@ -17,7 +17,7 @@ const db = mongoose.connection;
 if (process.env.NODE_ENV !== 'production') {
   app.use(
     cors({
-      origin: ['http://localhost:3000'],
+      origin: ['http://localhost:4000'],
       credentials: true,
     }
     ));
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/img')));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(helmet());
 app.use(session({
@@ -33,7 +33,8 @@ app.use(session({
 }));
 
 app.use('/api', adsRoutes);
-app.use('/auth', authRoutes);
+app.use('/auth', authRoutes); 
+app.use(express.static(path.join(__dirname, '/img')));
 
 app.use((err, req, res, next) => {
   if (err) {
@@ -52,8 +53,8 @@ db.once('open', () => {
 });
 db.on('error', err => console.log('Error ' + err));
 
-const server = app.listen(8000, () => {
-  console.log('Server is running on port: 8000');
+const server = app.listen(9000, () => {
+  console.log('Server is running on port: 9000');
 });
 
 module.exports = server;

@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from "react-bootstrap";
+import { Routes, Route } from 'react-router-dom';
+import Header from "./components/views/Header/Header";
+import Home from "./components/pages/Home/Home";
+import Ad from "./components/pages/Ad/Ad"
+import AdAdd from "./components/pages/AdAdd/AdAdd"
+import Remove from "./components/pages/AdRemove/AdRemove"
+import Edit from './components/pages/AdEdit/AdEdit'
+import Search from "./components/pages/Search/Search"
+import Login from "./components/pages/Login/Login"
+import Register from "./components/pages/Register/Register"
+import Logout from "./components/pages/Logout/Logout"
+import NotFound from "./components/views/NotFound/NotFound"
+import Footer from "./components/views/Footer/Footer";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/ad/:id" element={<Ad />} />
+        <Route path="/ad/add" element={<AdAdd />} />
+        <Route path="/ad/edit/:id" element={<Edit />} />
+        <Route path="/ad/remove/:id" element={<Remove />} />
+        <Route path="/search/:searchPhrase" element={<Search />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </Container>
   );
 }
 
