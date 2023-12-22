@@ -45,7 +45,7 @@ exports.post = async (req, res) => {
 
             if (!req.file || !['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
                 if (req.file) {
-                    const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                     fs.unlinkSync(fileRoute)
                 }
                 return res.status(400).json({ message: 'Please upload an image file' });
@@ -64,7 +64,7 @@ exports.post = async (req, res) => {
 
             if (titleMatched.length < title.length || contentMatched.length < content.length || locationMatched.length < location.length) {
                 if (req.file) {
-                    const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                     fs.unlinkSync(fileRoute)
                 }
                 return res.status(400).json({ message: 'Invalid characters' });
@@ -87,7 +87,7 @@ exports.post = async (req, res) => {
             res.json({ message: 'OK', ad: adWithUser });
         } else {
             if (req.file) {
-                const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                 fs.unlinkSync(fileRoute)
             }
             res.status(400).send({ message: 'Bad request' })
@@ -95,7 +95,7 @@ exports.post = async (req, res) => {
 
     } catch (err) {
         if (req.file) {
-            const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+            const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
             fs.unlinkSync(fileRoute)
         }
         console.error(err);
@@ -110,7 +110,7 @@ exports.put = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
 
             if (req.file) {
-                const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                 fs.unlinkSync(fileRoute)
             }
 
@@ -136,7 +136,7 @@ exports.put = async (req, res) => {
                 const titleMatched = title.match(pattern).join('');
                 if (titleMatched.length < title.length) {
                     if (req.file) {
-                        const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                        const fileRoute = path.join(__dirname , '../public/img/uploads/', req.file.filename)
                         fs.unlinkSync(fileRoute)
                     }
                     return res.status(400).json({ message: 'Invalid characters' });
@@ -147,7 +147,7 @@ exports.put = async (req, res) => {
                 const contentMatched = content.match(pattern).join('');
                 if (contentMatched.length < content.length) {
                     if (req.file) {
-                        const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                        const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                         fs.unlinkSync(fileRoute)
                     }
                     return res.status(400).json({ message: 'Invalid characters' });
@@ -159,7 +159,7 @@ exports.put = async (req, res) => {
                 const locationMatched = location.match(locationPattern).join('');
                 if (locationMatched.length < location.length) {
                     if (req.file) {
-                        const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                        const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                         fs.unlinkSync(fileRoute)
                     }
                     return res.status(400).json({ message: 'Invalid characters' });
@@ -173,7 +173,7 @@ exports.put = async (req, res) => {
                 const oldFilePath = path.join(__dirname, '..', ad.image);
                 if (!['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
 
-                    const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                     fs.unlinkSync(fileRoute)
 
                     return res.status(400).json({ message: 'Please upload an image file' });
@@ -192,14 +192,14 @@ exports.put = async (req, res) => {
             res.json(ad);
         } else {
             if (req.file) {
-                const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                 fs.unlinkSync(fileRoute)
             }
             res.status(404).json({ message: 'Not found...' });
         }
     } catch (err) {
         if (req.file) {
-            const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+            const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
             fs.unlinkSync(fileRoute)
         }
         console.error(err);

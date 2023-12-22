@@ -13,15 +13,15 @@ exports.register = async (req, res) => {
 
         const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
-        if (login && typeof login === 'string' && password && typeof password === 'string' && phone && typeof parseInt(phone) === 'number'
-            && req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
+        if (login && typeof login === 'string' && password && typeof password === 'string' && phone && typeof parseInt(phone) === 'number') {
+
             const userWithLogin = await User.findOne({ login });
             if (userWithLogin) {
                 if (req.file) {
-                    const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                     fs.unlinkSync(fileRoute)
                 }
-                return res.status(409).send({ message: 'User with this login already exists' })
+                return res.status(409).send({ message: 'User with this login already exists' });
             }
 
             const loginPattern = new RegExp(/([A-Za-z\d]*)/, 'g')
@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
 
             if (loginMatched.length < login.length || passwordMatched.length < password.length) {
                 if (req.file) {
-                    const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                     fs.unlinkSync(fileRoute)
                 }
                 return res.status(400).json({ message: 'Invalid characters' });
@@ -63,10 +63,18 @@ exports.register = async (req, res) => {
                 console.log("Strong password!");
             } else {
                 if (req.file) {
-                    const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                     fs.unlinkSync(fileRoute)
                 }
                 return res.status(400).send({ message: 'Your password is too weak' })
+            }
+
+            if (!req.file || !['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
+                if (req.file) {
+                    const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
+                    fs.unlinkSync(fileRoute)
+                }
+                return res.status(400).json({ message: 'Please upload an image file' });
             }
 
             const avatar = '/img/uploads/' + req.file.filename
@@ -75,14 +83,14 @@ exports.register = async (req, res) => {
             res.status(201).send({ message: 'User created' + user.login });
         } else {
             if (req.file) {
-                const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+                const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                 fs.unlinkSync(fileRoute)
             }
             res.status(400).send({ message: 'Bad request' })
         }
     } catch (err) {
         if (req.file) {
-            const fileRoute = path.join(__dirname, '../img/uploads/', req.file.filename)
+            const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
             fs.unlinkSync(fileRoute)
         }
         res.status(500).send({ message: err.message });

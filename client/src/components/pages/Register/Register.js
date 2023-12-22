@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap"
+import RegisterForm from "../../feautures/RegisterForm/RegisterForm"
 
 
 const Register = () => {
     return (
-        <Container>
-            <h1>Register</h1>
-           
+        <Container className="col-12">
+            <RegisterForm />
         </Container>
     )
 }
