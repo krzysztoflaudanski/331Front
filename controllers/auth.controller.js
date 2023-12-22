@@ -102,6 +102,7 @@ exports.login = async (req, res) => {
 
         const cleanBody = sanitize(req.body)
         const { login, password } = cleanBody;
+        console.log(req.body)
 
         if (login && typeof login === 'string' && password && typeof password === 'string') {
 
@@ -126,6 +127,7 @@ exports.login = async (req, res) => {
                         login: user.login,
                     };
                     res.status(200).send({ message: 'Login successful' });
+                    console.log(req.session.user)
                 } else {
                     res.status(400).send({ message: 'Login or password are incorrect' });
                 }
@@ -134,6 +136,7 @@ exports.login = async (req, res) => {
             res.status(400).send({ message: 'Bad request' });
         }
     } catch (err) {
+        console.log('błąd')
         res.status(500).send({ message: err.message });
     }
 };
