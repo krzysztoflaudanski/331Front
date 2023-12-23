@@ -2,8 +2,20 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+
 
 const NavBar = () => {
+    
+    const user = useSelector(state => state.user);
+
+    const [login, setLogin] = useState('');
+
+    useEffect (() => {
+        setLogin(user)
+    },[user])
+
     return (
         <Navbar bg="primary" variant="dark" expand="lg" className="mt-4 mb-4 rounded">
             <Container>
@@ -14,9 +26,9 @@ const NavBar = () => {
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
                     <Nav className="justify-content-end" >
                         <Nav.Link as={NavLink} to="/">Home</Nav.Link>
-                        <Nav.Link as={NavLink} to="/login">Sing In</Nav.Link>
-                        <Nav.Link as={NavLink} to="/register">Sing Up</Nav.Link>
-                        <Nav.Link as={NavLink} to="/logout">Sing Out</Nav.Link>
+                        {!login && <Nav.Link as={NavLink} to="/login">Sing In</Nav.Link>}
+                        {!login && <Nav.Link as={NavLink} to="/register">Sing Up</Nav.Link>}
+                        {login && <Nav.Link as={NavLink} to="/logout">Sing Out</Nav.Link>}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

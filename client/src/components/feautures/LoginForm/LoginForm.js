@@ -3,53 +3,53 @@ import { useState } from "react";
 import { API_URL } from "../../../config";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../../redux/usersRedux";
+import { useNavigate } from "react-router-dom";
+
 
 const LoginForm = () => {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    // const [phone, setPhone] = useState('');
-    // const [avatar, setAvatar] = useState(null);
-     const [status, setStatus] = useState(null) //loading, success, serverError, clientError, loginError
-     const dispatch = useDispatch();
+    const [status, setStatus] = useState(null) //loading, success, serverError, clientError
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
     const handleSubmit = e => {
         e.preventDefault();
-    
+
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({login, password})
+            body: JSON.stringify({ login, password })
         };
 
         setStatus('loading');
         fetch(`${API_URL}/auth/login`, options)
             .then(res => {
-                //console.log(res.status)
-                console.log(res.body)
                 if (res.status === 200) {
-                    setStatus('success');
-                    console.log(status)
-
-                    dispatch(logIn({login}))
+                    return res.json();
                 }
                 else if (res.status === 400) {
                     setStatus('clientError')
                 } else {
-                   
                     setStatus('serverError')
                 }
             })
+            .then(data => {
+                const { id, avatar, phone } = data.user;
+                setStatus('success');
+                dispatch(logIn({ login, id, avatar, phone }));
+                navigate('/')
+            })
             .catch(err => {
-                console.log(status)
                 console.log(err)
                 setStatus('serverError')
             })
-    } 
-   
+    }
+
 
     return (
         <Form onSubmit={handleSubmit} className="mx-auto" style={{ width: '300px' }}>

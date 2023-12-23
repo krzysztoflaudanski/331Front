@@ -7,7 +7,7 @@ const getImageFileType = require('../utils/getImageFileType')
 
 exports.getAll = async (req, res) => {
     try {
-        res.json(await Ad.find().populate('user'));
+        res.json(await Ad.find().populate({ path: 'user', select: '-password' }));
     }
     catch (err) {
         res.status(500).json({ message: err });
@@ -20,7 +20,7 @@ exports.getById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         res.status(501).json({ message: 'Invalid UUID' });
     } else {
-        const ad = await Ad.findById(req.params.id).populate('user');
+        const ad = await Ad.findById(req.params.id).populate({ path: 'user', select: '-password' });
 
         if (!ad) res.status(404).json({ message: 'Not found' });
         else res.json(ad);

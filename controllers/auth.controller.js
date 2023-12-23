@@ -102,7 +102,7 @@ exports.login = async (req, res) => {
 
         const cleanBody = sanitize(req.body)
         const { login, password } = cleanBody;
-        console.log(req.body)
+        //console.log(req.body)
 
         if (login && typeof login === 'string' && password && typeof password === 'string') {
 
@@ -126,8 +126,15 @@ exports.login = async (req, res) => {
                         id: user.id,
                         login: user.login,
                     };
-                    res.status(200).send({ message: 'Login successful' });
-                    console.log(req.session.user)
+                    res.status(200).json({
+                        message: 'Login successful',
+                        user: {
+                            id: user.id,
+                            login: user.login,
+                            avatar: user.avatar,
+                            phone: user.phone,
+                        },
+                    })
                 } else {
                     res.status(400).send({ message: 'Login or password are incorrect' });
                 }
@@ -144,6 +151,7 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         if (process.env.NODE_ENV !== "production") {
+            console.log(req.session)
             req.session.destroy((err) => {
                 if (err) {
                     res.status(500).send({ message: err.message });
