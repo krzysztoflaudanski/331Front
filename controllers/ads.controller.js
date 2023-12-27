@@ -235,6 +235,7 @@ exports.delete = async (req, res) => {
 exports.getBySearch = async (req, res) => {
     try {
         const searchPhrase = req.params.searchPhrase
+        console.log(searchPhrase)
         const searchResults = await Ad.find({
             $or: [
                 { title: { $regex: `\\b${searchPhrase}\\b`, $options: 'i' } },

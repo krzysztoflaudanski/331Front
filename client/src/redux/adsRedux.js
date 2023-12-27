@@ -20,11 +20,8 @@ export const fetchAds = () => {
       .then(res =>
         res.json()
       )
-
       .then(ads =>
-
         dispatch(updateAds(ads)))
-
   }
 };
 

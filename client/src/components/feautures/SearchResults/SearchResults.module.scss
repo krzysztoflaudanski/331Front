@@ -8,7 +8,6 @@ img{
     white-space: nowrap;      /* Uniemożliwienie łamania tekstu na nową linię */
     overflow: hidden;         /* Ukrycie tekstu, który wychodzi poza kontener */
     text-overflow: ellipsis;
-    max-width: 300px
 }
 
 @media (max-width: 1199px) {
@@ -17,3 +16,4 @@ img{
         max-width: 300px;
     }
 }
+

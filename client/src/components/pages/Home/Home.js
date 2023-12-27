@@ -1,11 +1,12 @@
 import { Container } from "react-bootstrap"
 import AllAds from "../../feautures/AllAds/AllAds"
+import Search from "../Search/Search"
 
 
 const Home = () => {
     return (
         <Container>
-            <h1>Home</h1>
+            <Search />
             <AllAds />
         </Container>
     )
