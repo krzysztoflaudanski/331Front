@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap"
+import AdSelected from "../../feautures/AdSelected/AdSelected"
 
 
 const Ad = () => {
     return (
         <Container>
-            <h1>Ad</h1>
-           
+           <AdSelected />
         </Container>
     )
 }

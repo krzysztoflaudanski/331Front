@@ -82,7 +82,7 @@ exports.post = async (req, res) => {
 
             await newAd.save();
 
-            const adWithUser = await Ad.findById(newAd._id).populate('user');
+            const adWithUser = await Ad.findById(newAd._id).populate({ path: 'user', select: '-password' });
 
             res.json({ message: 'OK', ad: adWithUser });
         } else {
@@ -124,8 +124,9 @@ exports.put = async (req, res) => {
             price,
             location,
         } = cleanBody;
-
-        const ad = await Ad.findById(req.params.id);
+        const ad = await Ad.findById(req.params.id)
+        //const ad = await Ad.findById(req.params.id);
+        //ad.populate({ path: 'user', select: '-password' })
 
         if (ad && ad.user === req.session.user.id) {
 
@@ -136,7 +137,7 @@ exports.put = async (req, res) => {
                 const titleMatched = title.match(pattern).join('');
                 if (titleMatched.length < title.length) {
                     if (req.file) {
-                        const fileRoute = path.join(__dirname , '../public/img/uploads/', req.file.filename)
+                        const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                         fs.unlinkSync(fileRoute)
                     }
                     return res.status(400).json({ message: 'Invalid characters' });
@@ -170,7 +171,8 @@ exports.put = async (req, res) => {
             const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
             if (req.file && req.file.filename) {
-                const oldFilePath = path.join(__dirname, '..', ad.image);
+                const oldFilePath = path.join(__dirname, '../public', ad.image);
+
                 if (!['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
 
                     const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
@@ -181,15 +183,14 @@ exports.put = async (req, res) => {
                 if (fs.existsSync(oldFilePath)) {
                     fs.unlinkSync(oldFilePath);
                 }
-            }
-
-            if (req.file) {
                 const fileRoute = '/img/uploads/' + req.file.filename
                 ad.image = fileRoute;
             }
 
-            await ad.save();
-            res.json(ad);
+            await ad.save()
+
+            const adWithUser = await Ad.findById(ad._id).populate({ path: 'user', select: '-password' });
+            res.json(adWithUser);
         } else {
             if (req.file) {
                 const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
@@ -215,8 +216,11 @@ exports.delete = async (req, res) => {
         res.status(501).json({ message: 'Invalid UUID' });
     } else {
         const deletedAd = await Ad.findById(req.params.id);
+
         if (deletedAd && deletedAd.user === req.session.user.id) {
-            const oldFilePath = path.join(__dirname, '..', deletedAd.image);
+
+            const oldFilePath = path.join(__dirname, '../public/', deletedAd.image);
+
             if (fs.existsSync(oldFilePath)) {
                 fs.unlinkSync(oldFilePath);
             }

@@ -1,0 +1,18 @@
+img{
+    object-fit: cover;
+    width: 300px;
+    height: 200px;
+}
+
+.title{
+    white-space: nowrap;      /* Uniemożliwienie łamania tekstu na nową linię */
+    overflow: hidden;         /* Ukrycie tekstu, który wychodzi poza kontener */
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 1199px) {
+    img {
+        width: auto;
+        max-width: 300px;
+    }
+}

@@ -26,6 +26,7 @@ function App() {
   return (
     <Container>
       <Header />
+      <Search />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ad/:id" element={<Ad />} />

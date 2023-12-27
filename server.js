@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public/')));
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(helmet());
 app.use(session({
@@ -34,8 +34,6 @@ app.use(session({
 
 app.use('/api', adsRoutes);
 app.use('/auth', authRoutes); 
-app.use(express.static(path.join(__dirname, '/img')));
-
 app.use((err, req, res, next) => {
   if (err) {
     console.error(err.stack);

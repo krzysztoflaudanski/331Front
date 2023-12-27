@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap"
+import AdEditForm from "../../feautures/AdEditForm/AdEditForm"
 
 
 const AdEdit = () => {
     return (
         <Container>
-            <h1>Ad Edit</h1>
-           
+           <AdEditForm />
         </Container>
     )
 }

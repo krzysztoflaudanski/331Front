@@ -39,6 +39,7 @@ const LoginForm = () => {
                 }
             })
             .then(data => {
+                console.log(data)
                 const { id, avatar, phone } = data.user;
                 setStatus('success');
                 dispatch(logIn({ login, id, avatar, phone }));
