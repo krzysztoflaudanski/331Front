@@ -1,4 +1,3 @@
-import Card from 'react-bootstrap/Card';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +9,7 @@ import { searchResults } from '../../../redux/searchRedux';
 const SearchForm = () => {
     const [login, setLogin] = useState(false);
     const [search, setSearch] = useState('');
+    const [placeholder, setPlaceholder] = useState('search...')
     const user = useSelector(state => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -23,14 +23,19 @@ const SearchForm = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        
-        fetch(API_URL + '/api/ads/search/' + search)
-            .then(res => res.json())
-            .then(ads => {
-                
-                dispatch(searchResults(ads));
-                navigate('/search/' + search)
-            });
+
+        if (search.length > 0) {
+            fetch(API_URL + '/api/ads/search/' + search)
+                .then(res => res.json())
+                .then(ads => {
+
+                    dispatch(searchResults(ads));
+                    navigate('/search/' + search);
+
+                });
+        } else {
+            setPlaceholder('Enter searchPhrase')
+        }
     };
 
     return (
@@ -39,7 +44,7 @@ const SearchForm = () => {
                 <Form onSubmit={handleSubmit} style={{ width: '300px' }} className='d-flex'>
                     {/* Sekcja "Search" umieszczona po lewej stronie */}
                     <Form.Group className="me-2" controlId="search" style={{ marginBottom: 0 }}>
-                        <Form.Control type="text" placeholder="Search..." onChange={e => setSearch(e.target.value)} />
+                        <Form.Control type="text" placeholder={placeholder} onChange={e => setSearch(e.target.value)} />
                     </Form.Group>
                     <Button variant="primary" type="submit">Search</Button>
                 </Form>
@@ -48,11 +53,10 @@ const SearchForm = () => {
                 {/* Guzik "Ad" renderowany tylko gdy login jest prawdziwy */}
                 {login && (
                     <NavLink to="/ad/add">
-                        <Card.Link><Button variant="primary">Add ad</Button></Card.Link>
+                        <Button variant="primary">Add ad</Button>
                     </NavLink>
                 )}
             </div>
-
         </article>
     )
 }

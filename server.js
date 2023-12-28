@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -11,13 +12,13 @@ const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://laudanskikrzysztof86:Password100@cluster0.c8kjc4z.mongodb.net/annDB?retryWrites=true&w=majority', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 const db = mongoose.connection;
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(
     cors({
-      origin: ['http://localhost:4000'],
+      origin: ['http://localhost:3000'],
       credentials: true,
     }
     ));
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, '/public/')));
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(helmet());
 app.use(session({
-  secret: 'xyz567', store: MongoStore.create(mongoose.connection), resave: false, saveUninitialized: false
+  secret: process.env.SECRET, store: MongoStore.create(mongoose.connection), resave: false, saveUninitialized: false,
 }));
 
 app.use('/api', adsRoutes);
@@ -51,8 +52,8 @@ db.once('open', () => {
 });
 db.on('error', err => console.log('Error ' + err));
 
-const server = app.listen(9000, () => {
-  console.log('Server is running on port: 9000');
+const server = app.listen(8000, () => {
+  console.log('Server is running on port: 8000');
 });
 
 module.exports = server;

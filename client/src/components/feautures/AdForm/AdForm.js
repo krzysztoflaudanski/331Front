@@ -1,6 +1,7 @@
 import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form"
 
+
 const AdForm = ({ action, actionText, ...props }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -46,9 +47,10 @@ const AdForm = ({ action, actionText, ...props }) => {
                     type="text" placeholder="Enter price" />
                 {errors.price && <small className='d-block form-text text-danger mt-2'>Only 0-9 are available</small>}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formLogin">
+            <Form.Group className="mb-3" controlId="image">
                 <Form.Label>Image</Form.Label>
-                <Form.Control {...register("image")} type="file" />
+                <Form.Control {...register("image", {required: !props.id})} type="file"/>
+                {errors.image && <small className='d-block form-text text-danger mt-2'>Image is required</small>}
             </Form.Group>
             <Button type="submit">{actionText}</Button>
         </Form>

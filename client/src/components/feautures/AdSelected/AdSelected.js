@@ -32,18 +32,18 @@ const AdSelected = () => {
         dispatch(removeAddRequest(adData._id))
         navigate('/')
     }
-    
+
     useEffect(() => {
         if (user && adData && user.id === adData.user._id) {
             setLogin(true);
-            console.log(login)
         }
-    }, [user])
-    
+    }, [user, adData])
+
     if (!adData) return <Navigate to="/" />
     else return (<article>
         <Card style={{}}>
-            <Card.Img variant="top" src={IMGS_URL + adData.image} />
+
+            <div className={styles.img}><Card.Img variant="top" src={IMGS_URL + adData.image} /></div>
             <Card.Body>
                 <Card.Title>{adData.title}</Card.Title>
                 <Card.Text>
@@ -56,9 +56,9 @@ const AdSelected = () => {
                 <ListGroup.Item>Price: {adData.price} $</ListGroup.Item>
             </ListGroup>
             {login && <Card.Body>
-                <NavLink to= {"/ad/edit/" + adData._id}>  <Card.Link><Button variant="outline-info" >Edit</Button></Card.Link></NavLink>
-              
-                <Card.Link><Button variant="outline-danger" onClick={handleShow}>Delete</Button></Card.Link>
+                <NavLink to={"/ad/edit/" + adData._id}>  <Card.Link><Button variant="outline-info" >Edit</Button></Card.Link></NavLink>
+
+                <Card.Link className="px-2"><Button variant="outline-danger" onClick={handleShow}>Delete</Button></Card.Link>
             </Card.Body>}
             {!login && <Card.Body>
                 <Container>

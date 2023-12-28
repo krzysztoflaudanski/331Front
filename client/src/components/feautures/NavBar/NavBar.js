@@ -7,14 +7,14 @@ import { useEffect, useState } from 'react';
 
 
 const NavBar = () => {
-    
+
     const user = useSelector(state => state.user);
 
     const [login, setLogin] = useState('');
 
-    useEffect (() => {
+    useEffect(() => {
         setLogin(user)
-    },[user])
+    }, [user])
 
     return (
         <Navbar bg="primary" variant="dark" expand="lg" className="mt-4 mb-4 rounded">

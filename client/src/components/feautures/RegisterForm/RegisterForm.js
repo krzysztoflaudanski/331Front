@@ -1,8 +1,11 @@
 import { Alert, Button, Form, Spinner } from "react-bootstrap";
 import { useState } from "react";
 import { API_URL } from "../../../config";
+import { useForm } from "react-hook-form";
 
 const RegisterForm = () => {
+
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -11,9 +14,8 @@ const RegisterForm = () => {
     const [status, setStatus] = useState(null) //loading, success, serverError, clientError, loginError
 
 
-    const handleSubmit = e => {
-        e.preventDefault();
-    
+    const onSubmit = () => {
+
         const fd = new FormData();
         fd.append('login', login);
         fd.append('password', password);
@@ -24,7 +26,6 @@ const RegisterForm = () => {
             method: 'POST',
             body: fd
         };
-
         setStatus('loading');
         fetch(`${API_URL}/auth/register`, options)
             .then(res => {
@@ -42,11 +43,11 @@ const RegisterForm = () => {
             .catch(err => {
                 setStatus('serverError')
             })
-        
+
     }
 
     return (
-        <Form onSubmit={handleSubmit} className="mx-auto" style={{ width: '300px' }}>
+        <Form onSubmit={handleSubmit(onSubmit)} className="mx-auto" style={{ width: '300px' }}>
 
             <h1>Sign Up</h1>
 
@@ -81,24 +82,36 @@ const RegisterForm = () => {
                     </Spinner>
                 </div>)}
 
-            <Form.Group className="mb-3" controlId="formLogin">
+            <Form.Group className="mb-3" controlId="login">
                 <Form.Label>Login</Form.Label>
-                <Form.Control type="text" placeholder="Enter login" value={login} onChange={e => setLogin(e.target.value)} />
+                <Form.Control {...register("login", { required: true, minLength: 10, maxLength: 50, pattern: /^[A-Za-z0-9]*$/ })}
+                    type="text" placeholder="Enter login" value={login} onChange={e => setLogin(e.target.value)} />
+                {errors.login && <small className='d-block form-text text-danger mt-2'>only a-z, A-Z, 1-9, .,!?$-*: are available, min:10, max:50</small>}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Group className="mb-3" controlId="password">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="text" placeholder="Enter login" value={password} onChange={e => setPassword(e.target.value)} />
+                <Form.Control {...register("password", {
+                    required: true, minLength: 8, pattern: {
+                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+                        message: "Password must contain at least one lowercase letter, one uppercase letter, and one digit.",
+                    }
+                })}
+                    type="password" placeholder="Enter password" value={password} onChange={e => setPassword(e.target.value)} />
+                {errors.password && <small className='d-block form-text text-danger mt-2'>only a-z, A-Z, 1-9, .,;:"'/?!@#$%^&*()--+= are available, min:8, {errors.password.message}</small>}
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formPhone">
+            <Form.Group className="mb-3" controlId="phone">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control type="tel" placeholder="Phone number" value={phone} onChange={e => setPhone(e.target.value)} />
+                <Form.Control {...register("phone", { required: true, minLength: 9, maxLength: 25, pattern: /^[0-9]+$/ })}
+                    type="tel" placeholder="Phone number" value={phone} onChange={e => setPhone(e.target.value)} />
+                {errors.phone && <small className='d-block form-text text-danger mt-2'>only 1-9 are available, min:9, max:25</small>}
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formLogin">
+            <Form.Group className="mb-3" controlId="avatar">
                 <Form.Label>Avatar</Form.Label>
-                <Form.Control type="file" onChange={e => setAvatar(e.target.files[0])} />
+                <Form.Control {...register("avatar", { required: true })}
+                    type="file" onChange={e => setAvatar(e.target.files[0])} />
+                {errors.avatar && <small className='d-block form-text text-danger mt-2'>Avatar is required</small>}
             </Form.Group>
             <Button variant="primary" type="submit">Submit</Button>
         </Form>

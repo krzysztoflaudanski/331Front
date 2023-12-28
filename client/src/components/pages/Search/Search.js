@@ -6,7 +6,7 @@ const Search = () => {
     return (
         <Container>
             <SearchForm />
-            <SearchResults />
+            <SearchResults /> 
         </Container>
     )
 }

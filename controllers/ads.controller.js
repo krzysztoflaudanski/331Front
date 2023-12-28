@@ -108,15 +108,16 @@ exports.put = async (req, res) => {
         const id = req.params.id;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-
+            
             if (req.file) {
+                
                 const fileRoute = path.join(__dirname, '../public/img/uploads/', req.file.filename)
                 fs.unlinkSync(fileRoute)
             }
 
             return res.status(501).json({ message: 'Invalid UUID' });
         }
-
+        console.log("PUT: " + req.file)
         const cleanBody = sanitize(req.body)
         const {
             title,
@@ -235,7 +236,7 @@ exports.delete = async (req, res) => {
 exports.getBySearch = async (req, res) => {
     try {
         const searchPhrase = req.params.searchPhrase
-        console.log(searchPhrase)
+        
         const searchResults = await Ad.find({
             $or: [
                 { title: { $regex: `\\b${searchPhrase}\\b`, $options: 'i' } },

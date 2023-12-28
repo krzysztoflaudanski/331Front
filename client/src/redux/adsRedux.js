@@ -53,7 +53,7 @@ export const editAdRequest = (ad) => {
     fd.append('content', content);
     fd.append('price', price);
     fd.append('location', location);
-    fd.append('image', image);
+    fd.append('image', image[0]);
 
     const options = {
       method: 'PUT',
@@ -71,13 +71,42 @@ export const editAdRequest = (ad) => {
   };
 }
 
-const adsReducer = (statePart = [], action) => {
 
+export const addAdRequest = (ad) => {
+
+  return (dispatch) => {
+
+    const { title, content, price, location, image, user } = ad
+    const fd = new FormData();
+    fd.append('title', title);
+    fd.append('content', content);
+    fd.append('price', price);
+    fd.append('location', location);
+    fd.append('user', user)
+    fd.append('image', image[0]);
+
+    const options = {
+      method: 'POST',
+      body: fd
+    };
+
+    fetch(`${API_URL}/api/ads/`, options)
+      .then(res =>
+        res.json()
+      )
+
+      .then(ad => {
+        dispatch(addAd(ad.ad));
+      })
+  };
+}
+
+const adsReducer = (statePart = [], action) => {
   switch (action.type) {
     case UPDATE_ADS:
       return [...action.payload];
-    //   case ADD_AD:
-    //     return [...statePart, { ...action.payload }];
+    case ADD_AD:
+      return [...statePart, { ...action.payload }];
     case EDIT_AD:
       return statePart.map(ad => (ad._id === action.payload._id ? { ...ad, ...action.payload } : ad));
     case REMOVE_AD:

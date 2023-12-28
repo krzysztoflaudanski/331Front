@@ -1,6 +1,6 @@
-img{
+.img{
     object-fit: cover;
-    width: 300px;
+    max-width: 300px;
     height: 200px;
 }
 
@@ -11,9 +11,4 @@ img{
     max-width: 300px
 }
 
-@media (max-width: 1199px) {
-    img {
-        width: auto;
-        max-width: 300px;
-    }
-}
+

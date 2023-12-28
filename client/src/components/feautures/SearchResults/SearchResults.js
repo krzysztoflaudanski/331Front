@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux"
-import { useState } from "react";
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import { NavLink } from 'react-router-dom';
@@ -8,31 +7,23 @@ import { IMGS_URL } from "../../../config";
 import styles from './SearchResults.module.scss'
 import formatShortDate from "./../../../utils/formatShortDate"
 import { getAllSearchAds } from "../../../redux/searchRedux";
-import {Button} from "react-bootstrap";
-
+import { Button } from "react-bootstrap";
 
 const SearchResults = () => {
 
-    
-
-    const [refreshKey, setRefreshKey] = useState(0);
-
     const ads = useSelector(getAllSearchAds);
 
-    const handleBackClick = () => {
-        // Tu możesz dodać dodatkową logikę, jeśli to konieczne
-        setRefreshKey((prevKey) => prevKey + 1);
-
-    }
     return (
-        <section id="searchResults" key={refreshKey}>
+
+        <section id="searchResults">
+
             {!ads && (
                 <div className="text-center">
-                   No results...
+                    No results...
                 </div>)}
             {ads && <Row>{ads.map(ad => (
                 <Col key={ad._id} className="col-lg-4">
-                    <Card className="mr-2 mb-3" style={{ minWidth: '18rem' }}>
+                    <Card className="mr-2 mb-3" style={{ width: '18rem' }}>
                         <Card.Body  >
                             <Card.Title className={styles.title}>{ad.title}</Card.Title>
                             <Stack direction="horizontal" gap={1}>
@@ -58,6 +49,7 @@ const SearchResults = () => {
                         </Card.Body>
                     </Card></Col>))}
             </Row>}
+
         </section>
     )
 }

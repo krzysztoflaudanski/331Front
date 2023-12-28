@@ -30,6 +30,7 @@ const LoginForm = () => {
         fetch(`${API_URL}/auth/login`, options)
             .then(res => {
                 if (res.status === 200) {
+                    
                     return res.json();
                 }
                 else if (res.status === 400) {
@@ -39,7 +40,7 @@ const LoginForm = () => {
                 }
             })
             .then(data => {
-                console.log(data)
+                
                 const { id, avatar, phone } = data.user;
                 setStatus('success');
                 dispatch(logIn({ login, id, avatar, phone }));
@@ -89,7 +90,7 @@ const LoginForm = () => {
 
             <Form.Group className="mb-3" controlId="formPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="text" placeholder="Enter password" value={password} onChange={e => setPassword(e.target.value)} />
+                <Form.Control type="password" placeholder="Enter password" value={password} onChange={e => setPassword(e.target.value)} />
             </Form.Group>
 
             <Button variant="primary" type="submit">Sing in</Button>

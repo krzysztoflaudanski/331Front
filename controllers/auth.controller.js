@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
         const { password, phone, login } = cleanBody;
 
         const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
-
+       
         if (login && typeof login === 'string' && password && typeof password === 'string' && phone && typeof parseInt(phone) === 'number') {
 
             const userWithLogin = await User.findOne({ login });
@@ -102,7 +102,6 @@ exports.login = async (req, res) => {
 
         const cleanBody = sanitize(req.body)
         const { login, password } = cleanBody;
-        //console.log(req.body)
 
         if (login && typeof login === 'string' && password && typeof password === 'string') {
 
@@ -122,10 +121,12 @@ exports.login = async (req, res) => {
                 res.status(400).send({ message: 'Login or password are incorrect' });
             } else {
                 if (bcrypt.compareSync(password, user.password)) {
+                   
                     req.session.user = {
                         id: user.id,
                         login: user.login,
                     };
+            
                     res.status(200).json({
                         message: 'Login successful',
                         user: {
@@ -143,15 +144,16 @@ exports.login = async (req, res) => {
             res.status(400).send({ message: 'Bad request' });
         }
     } catch (err) {
-        console.log('błąd')
+        
         res.status(500).send({ message: err.message });
     }
 };
 
 exports.logout = async (req, res) => {
+   
     try {
         if (process.env.NODE_ENV !== "production") {
-            console.log(req.session)
+            
             req.session.destroy((err) => {
                 if (err) {
                     res.status(500).send({ message: err.message });
