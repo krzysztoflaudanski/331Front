@@ -20,7 +20,7 @@ const Logout = () => {
                 dispatch(logOut());
                 navigate('/')
             })
-    }, [dispatch])
+    }, [dispatch, navigate])
 
     return null;
 }

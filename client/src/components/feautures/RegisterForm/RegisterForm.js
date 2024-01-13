@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 const RegisterForm = () => {
 
-    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+    const { register, handleSubmit, formState: { errors }} = useForm();
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
