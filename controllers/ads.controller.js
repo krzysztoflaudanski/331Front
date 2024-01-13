@@ -117,7 +117,7 @@ exports.put = async (req, res) => {
 
             return res.status(501).json({ message: 'Invalid UUID' });
         }
-        console.log("PUT: " + req.file)
+       
         const cleanBody = sanitize(req.body)
         const {
             title,
