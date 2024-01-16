@@ -26,9 +26,9 @@ const NavBar = () => {
                 <Navbar.Collapse className="justify-content-end" id="responsive-navbar-nav">
                     <Nav className="justify-content-end" >
                         <Nav.Link as={NavLink} to="/">Home</Nav.Link>
-                        {!login && <Nav.Link as={NavLink} to="/login">Sing In</Nav.Link>}
-                        {!login && <Nav.Link as={NavLink} to="/register">Sing Up</Nav.Link>}
-                        {login && <Nav.Link as={NavLink} to="/logout">Sing Out</Nav.Link>}
+                        {!login && <Nav.Link as={NavLink} to="/login">Sign In</Nav.Link>}
+                        {!login && <Nav.Link as={NavLink} to="/register">Sign Up</Nav.Link>}
+                        {login && <Nav.Link as={NavLink} to="/logout">Sign Out</Nav.Link>}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

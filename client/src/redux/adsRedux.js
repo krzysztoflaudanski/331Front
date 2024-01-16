@@ -91,13 +91,18 @@ export const addAdRequest = (ad) => {
     };
 
     fetch(`${API_URL}/api/ads/`, options)
-      .then(res =>
-        res.json()
-      )
+      .then(res => res.json())
+      .then(adData => {
 
-      .then(ad => {
-        dispatch(addAd(ad.ad));
+        if (adData && adData.ad) {
+          dispatch(addAd(adData.ad));
+        } else {
+          console.error('Bad data', adData);
+        }
       })
+      .catch(error => {
+        console.error(error);
+      });
   };
 }
 

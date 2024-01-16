@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 const RegisterForm = () => {
 
-    const { register, handleSubmit, formState: { errors }} = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -109,9 +109,22 @@ const RegisterForm = () => {
 
             <Form.Group className="mb-3" controlId="avatar">
                 <Form.Label>Avatar</Form.Label>
-                <Form.Control {...register("avatar", { required: true })}
+                <Form.Control {...register("avatar", {
+                    required: true,
+                    validate: {
+                        validFileType: value => {
+                            if (value && value[0] && value[0].name) {
+                                const validExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+                                const fileExtension = value[0].name.split('.').pop().toLowerCase();
+                                return validExtensions.includes('.' + fileExtension);
+                            }
+                            return true;
+                        },
+                    },
+                })}
                     type="file" onChange={e => setAvatar(e.target.files[0])} />
-                {errors.avatar && <small className='d-block form-text text-danger mt-2'>Avatar is required</small>}
+                {errors.avatar && errors.avatar.type === 'required' && (<small className='d-block form-text text-danger mt-2'>Avatar is required</small>)}
+                {errors.avatar && errors.avatar.type === 'validFileType' && (<small className='d-block form-text text-danger mt-2'>Please upload an image file with a valid extension (jpg, jpeg, png, gif).</small>)}
             </Form.Group>
             <Button variant="primary" type="submit">Submit</Button>
         </Form>
